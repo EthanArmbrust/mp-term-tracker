@@ -116,14 +116,6 @@ vector<prime_item> init_artifact_list()
     return {nature, sun, spirit, elder, strength, lifegiver, world, wild, chozo, truth, newborn, warrior};
 }
 
-void other_art_thing(vector<prime_item> &l)
-{
-    for (auto &a : l)
-    {
-        int offset = a.entry->getPointerOffset(0);
-        a.entry->setPointerOffset(offset + 4, 0);
-    }
-}
 
 prime_item_list init_beams()
 {
@@ -252,17 +244,6 @@ void draw_list(prime_item_list &l, int y, int x)
     mvaddstr(y, x, l.label.c_str());
 }
 
-wstring string_to_checkbox(string input)
-{
-    if (input == "0")
-    {
-        return L"\u2610";
-    }
-    else
-    {
-        return L"\u2611";
-    }
-}
 
 vector<string> split_message(string message, int width)
 {
@@ -353,7 +334,6 @@ int main()
     prime_item_list combos = init_combos();
     prime_item_list misc = init_misc();
     vector<prime_item> artifacts = init_artifact_list();
-    //other_art_thing(artifacts);
     int width = find_width_pil(artifacts);
     prime_item_list artifact_list = {"Artifacts", artifacts, width, false};
 
@@ -376,7 +356,6 @@ int main()
         DolphinComm::DolphinAccessor::updateRAMCache();
         string game_id = DolphinComm::DolphinAccessor::getFormattedValueFromCache(Common::dolphinAddrToOffset(MEM_START), Common::MemType::type_string, sizeof(char) * 6, Common::MemBase::base_none, true);
         string IGT_raw;
-        string wave_val;
         if (igt_entry.readMemoryFromRAM() == Common::MemOperationReturnCode::justK)
         {
             IGT_raw = igt_entry.getStringFromMemory();
